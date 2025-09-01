@@ -1,17 +1,17 @@
-# Темы
+## Topics
 
-- Веб - приложение: webapp.md
+- Web Application: webapp.md
 - Node.js: nodejs.md
 - Nest.js: nestjs.md
 - API: api.md
-- Алгоритм "минимакс" : minimax.md
+- Minimax Algorithm: minimax.md
 - MVC
 
-# Методические указания к заданиям
+## Methodological Guidelines for the Tasks
 
-Структура проекта должна выглядеть так:
+The project structure should look like this:
 
-```text
+```
 src/
 |-- game/
 |   |--models/
@@ -24,9 +24,13 @@ src/
 |   |-- game.module.
 |-- app.module.
 |-- main.
-
 ```
 
-Должно существовать 3 модели данных: `Board`, `Game`, `Move`, 1 сервис `GameService`, 1 контроллер `GameController`, 2 модуля `GameModule`, `AppModule`.
 
-Необходимо обратить внимане на декораторы `Injectable`, `Controller`, `Post`, `HttpCode`, `Module`, а также на `HttpException`, `HttpStatus` которые пригодятся при создании приложения.
+There should be 3 data models: `Board`, `Game`, and `Move`,  
+1 service: `GameService`,  
+1 controller: `GameController`,  
+2 modules: `GameModule` and `AppModule`.
+
+Pay close attention to the decorators `Injectable`, `Controller`, `Post`, `HttpCode`, and `Module`,  
+as well as to `HttpException` and `HttpStatus`, which will be useful when building the application.

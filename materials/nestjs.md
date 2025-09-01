@@ -1,12 +1,12 @@
 # Nest.js
 
-Nest.js — это фреймворк для создания масштабируемых и эффективных серверных приложений на основе Node.js. Nest.js предоставляет структурированный и модульный подход к разработке, используя TypeScript (или JavaScript) для написания кода.
+Nest.js is a framework for building scalable and efficient server-side applications using Node.js. It provides a structured and modular approach to development, using TypeScript (or JavaScript) as the primary language.
 
-# Контроллеры
+# Controllers
 
-Контроллеры отвечают за обработку входящих запросов (requests) и формирование ответов (responses). Для создания базового контроллера используются классы и декораторы (decorators). Декораторы связывают классы с необходимыми им метаданными и позволяют Nest создавать схему маршрутизации (карту роутинга, routing map) — привязывать запросы к соответствующим контроллерам.
+Controllers are responsible for handling incoming requests and returning responses. To create a basic controller, you use classes and decorators. Decorators bind metadata to classes, enabling Nest to construct a routing map that connects specific requests to corresponding handlers.
 
-В приведенном ниже примере мы используем декоратор `Controller` для создания базового контроллера. Мы определяем опциональный префикс пути (path prefix) posts. Использование префикса пути в `Controller` позволяет группировать набор связанных роутов и минимизировать повторяющийся код. Например, мы можем сгруппировать набор роутов для аутентификации и авторизации с помощью префикса auth. Использование префикса пути избавляет от необходимости дублировать его в каждом роуте контроллера.
+In the example below, we use the @Controller decorator to define a base controller. We specify an optional path prefix posts. Path prefixes in @Controller help group related routes and reduce code duplication. For example, we could group authentication routes under the prefix auth.
 
 ```typescript
 // posts.controller.ts
@@ -16,12 +16,12 @@ import { Controller, Get } from '@nestjs/common'
 export class PostController {
   @Get()
   getAllPosts(): string {
-    return 'Все посты'
+    return 'All posts'
   }
 }
 ```
 
-Обработчикам часто требуется доступ к деталям запроса. `Nest` предоставляет доступ к объекту запроса используемой платформы (фреймворка). Мы можем получить доступ к объекту запроса, указав Nest внедрить его с помощью декоратора `Req` в обработчике:
+In many cases, handlers need access to the request object. Nest provides a way to access the request object from the underlying platform (such as Express) using decorators. You can inject the request into a handler with the @Req decorator:
 
 ```typescript
 import { Controller, Get, Req } from '@nestjs/common'
@@ -31,12 +31,12 @@ import { Request } from 'express'
 export class PostController {
   @Get()
   getAllPosts(@Req req: Request): string {
-    return 'Все посты'
+    return 'All posts'
   }
 }
 ```
 
-Объект запроса представляет HTTP-запрос и содержит свойства для строки запроса, параметров, HTTP-заголовков и тела запроса. В большинстве случаев нам не требуется извлекать их вручную. Вместо этого, мы можем применить специальные декораторы, такие как Body или Query. Вот полный список декораторов и соответствующих им объектов:
+The request object represents the HTTP request and contains query string parameters, route parameters, headers, and the request body. Often, you don’t need to extract them manually—instead, use specialized decorators like @Body or @Query. Here's a list of available decorators and the corresponding request components:
 
 ```typescript
 - `@Request, @Req` — `req`;
@@ -51,32 +51,36 @@ export class PostController {
 - `@HostParam` — `req.hosts`.
 ```
 
-# Провайдеры (Providers)
+# Providers
 
 ![Alt text](image-2.png)
 
-*__Провайдеры__* — это фундаментальная концепция в `Nest`. Многие базовые классы Nest можно рассматривать как поставщики — сервисы, репозитории, фабрики, помощники и т. д. Основная идея провайдера заключается в том, что его можно внедрить как зависимость; это означает, что объекты могут создавать различные отношения друг с другом, а функцию «связывания» этих объектов можно в значительной степени делегировать системе времени выполнения Nest.
+*__Providers__* are a fundamental concept in `Nest`. Many of the base classes in Nest can be treated as providers — services, repositories, factories, helpers, etc. The core idea of a provider is that it can be injected as a dependency. This allows objects to relate to each other, and the process of "wiring" these objects together can largely be handled by Nest’s runtime system.
 
-# Сервисы (Services)
+# Services
 
-Cервисы представляют собой один из основных строительных блоков для организации бизнес-логики в приложении. Сервисы предназначены для обработки специфичных задач и предоставления функциональности контроллерам, провайдерам и другим частям приложения. Они поддерживают инъекцию зависимостей и являются одним из ключевых компонентов архитектуры `Nest.js`.
+*__Services__* are one of the main building blocks for organizing business logic in a Nest application. Services are designed to handle specific tasks and provide functionality to controllers, other providers, or other parts of the application. They support dependency injection and are a key component of the `Nest.js` architecture.
 
-# Модули (Moduels)
+# Modules
 
-*__Модуль__* — это класс, аннотированный декоратором `@Module()`. Декоратор `@Module()` предоставляет метаданные, которые Nest использует для организации структуры приложения.
+A *__module__* is a class annotated with the `@Module()` decorator. This decorator provides metadata that Nest uses to structure the application.
 
-Каждое приложение имеет как минимум один модуль — корневой . Корневой модуль — это отправная точка, которую Nest использует для построения графа приложения — внутренняя структура данных, которую Nest использует для разрешения отношений и зависимостей модуля и поставщика. Хотя очень маленькие приложения теоретически могут иметь только корневой модуль, это не типичный случай.
+Every application has at least one module — the `root module`. The root module is the starting point Nest uses to build the application graph — an internal data structure that helps Nest resolve relationships and dependencies between modules and providers. While theoretically, very small applications can consist of only a root module, this is not typical.
 
-Декоратор `@Module()` принимает один объект, свойства которого описывают модуль:
+The `@Module()` decorator takes an object with several properties:
 
-- `providers` - поставщики, экземпляры которых будут созданы инжектором Nest и которые могут использоваться как минимум в этом модуле.
-- `controllers` - набор контроллеров, определенных в этом модуле, экземпляры которых необходимо создать
-- `imports` - список импортированных модулей, которые экспортируют провайдеров, которые необходимы в этом модуле
-- `exports` - их подмножество providersпредоставляется этим модулем и должно быть доступно в других модулях, которые импортируют этот модуль. Вы можете использовать либо самого провайдера, либо только его токен ( provideзначение)
+- `providers` – the providers that will be instantiated by the Nest injector and can be shared within the module;
+- `controllers` – the set of controllers defined in the module;
+- `imports` – a list of other modules that export the providers required in this module;
+- `exports` – a subset of providers that should be available to modules that import this module. You can export the provider instance itself or just its token (i.e., its provide value).
 
-# middlewares (Посредники)
+# Middlewares
 
-*__Посредник__* — это функция, которая вызывается перед обработчиком маршрута. Функции имеют доступ к объектам запроса и ответа , а также к `next()` функции посредника в цикле запрос-ответ приложения. Следующая функция посредника обычно обозначается переменной с именем next.
+A *__middleware__* is a function that is called before the route handler. Middleware functions have access to the request and response objects, as well as the `next()` function, which they must call to pass control to the next handler in the request-response cycle.
+
+The next function is typically named next.
+
+Example:
 
 ```typescript
 import { Injectable, NestMiddleware } from '@nestjs/common';
@@ -89,13 +93,12 @@ export class LoggerMiddleware implements NestMiddleware {
     next();
   }
 }
-
-
 ```
 
-# Исключающие фильтры (Exception filters)
 
-`Nest` поставляется со встроенным слоем исключений , который отвечает за обработку всех необработанных исключений в приложении. Если исключение не обрабатывается кодом вашего приложения, оно перехватывается этим уровнем, который затем автоматически отправляет соответствующий удобный для пользователя ответ.
+# Exception Filters
+
+`Nest` comes with a built-in exception layer that handles all unhandled exceptions in the application. If an exception is not caught by your application code, it is intercepted by this layer, which then automatically sends a user-friendly response.
 
 ![Alt text](image-3.png)
 
@@ -106,18 +109,18 @@ async findAll() {
 }
 ```
 
-# Конвееры (Pipes)
+# Pipes
 
-*__Конвеер__* — это класс, аннотированный декоратором @Injectable(), который реализует PipeTransformинтерфейс.
+A `pipe` is a class annotated with the @Injectable() decorator that implements the PipeTransform interface.
 
-Конвееры имеют два типичных варианта использования:
+Pipes have two typical use cases:
 
-- преобразование входные данные в желаемую форму (например, из строки в целое число).
-- Проверка и оценка входных данных и, если они действительны, просто передать их без изменений; в противном случае выдайте исключение
+- Transforming input data into the desired format (e.g., from string to integer);
+- Validating and evaluating input data: if valid, pass it through unchanged; if not, throw an exception.
 
 ![Alt text](image-4.png)
 
-Nest поставляется с девятью конвеерам, доступных «из коробки»:
+Nest comes with nine built-in pipes:
 
 - `ValidationPipe`
 - `ParseIntPipe`
@@ -129,6 +132,8 @@ Nest поставляется с девятью конвеерам, доступ
 - `DefaultValuePipe`
 - `ParseFilePipe`
 
+Example usage:
+
 ```javascript
 @Get(':id')
 async findOne(@Param('id', ParseIntPipe) id: number) {
@@ -136,13 +141,16 @@ async findOne(@Param('id', ParseIntPipe) id: number) {
 }
 ```
 
-# Защитники (Guards)
 
-`Защитники` — это класс, помеченный декоратором `@Injectable()`, который реализует `CanActivateинтерфейс`.
+# Guards
+
+`Guards` are classes marked with the `@Injectable()` decorator that implement the `CanActivate` interface.
 
 ![Alt text](image-5.png)
 
-Охранники несут единственную ответственность . Они определяют, будет ли данный запрос обрабатываться обработчиком маршрута или нет, в зависимости от определенных условий (например, разрешений, ролей, списков управления доступом и т. д.), присутствующих во время выполнения.
+Guards have a single responsibility: they determine whether a given request will be handled by the route handler or not, based on specific conditions at runtime (e.g., permissions, roles, access control lists, etc.).
+
+Example:
 
 ```typescript
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
@@ -159,19 +167,21 @@ export class AuthGuard implements CanActivate {
 }
 ```
 
-# Перехватичики (Interceptors)
+# Interceptors
 
-*__Перехватчик__* — это класс, аннотированный декоратором @Injectable()и реализующий NestInterceptorинтерфейс.
+An *__interceptor__* is a class annotated with @Injectable() and implementing the NestInterceptor interface.
 
 ![Alt text](image-6.png)
 
-Перехватчики обладают набором полезных возможностей, основанных на методе аспектно-ориентированного программирования (АОП):
+Interceptors offer a set of powerful capabilities inspired by aspect-oriented programming (AOP):
 
-- привязывают дополнительную логику до/после выполнения метода
-- преобразовывают результат, возвращаемый функцией
-- выдают исключение, выданное функцией
-- расшириряют базовое поведение функции
-- полностью переопределяют функцию в зависимости от конкретных условий (например, в целях кэширования)
+- Bind extra logic before/after method execution;
+- Transform the result returned by a function;
+- Handle exceptions thrown by a function;
+- Extend base method behavior;
+- Fully override method execution based on conditions (e.g., for caching).
+
+Example:
 
 ```typescript
 import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
@@ -182,7 +192,6 @@ import { tap } from 'rxjs/operators';
 export class LoggingInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     console.log('Before...');
-
     const now = Date.now();
     return next
       .handle()

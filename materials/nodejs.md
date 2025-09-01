@@ -1,75 +1,73 @@
 # Node.js
 
-`Node.js` - это среда выполнения JavaScript, построенная на движке V8 от Google, который также используется в браузере Google Chrome. Node.js позволяет выполнять JavaScript на стороне сервера, что открывает новые возможности для создания масштабируемых и эффективных веб-приложений.
+`Node.js` is a JavaScript runtime built on Google’s V8 engine, the same engine used in the Google Chrome browser. Node.js enables the execution of JavaScript on the server side, unlocking new capabilities for building scalable and efficient web applications.
 
-Node.js использует событийно-ориентированную архитектуру и неблокирующие операции ввода/вывода, что позволяет эффективно обрабатывать множество запросов без блокировки потока выполнения. По умолчанию, Node.js использует CommonJS для организации кода в модули. Это позволяет разработчикам разделять код на множество файлов и повторно использовать его в различных частях приложения, но также можно использовать ESM модули. Node js имеет обширную базу библиотек и сообществ.
+Node.js uses an event-driven architecture and non-blocking I/O operations, making it highly efficient at handling multiple requests without blocking the execution thread.
 
-Node.js с открытым исходным кодом, кросс-платформенный, и с момента своего появления в 2009 году он приобрел огромную популярность и сейчас играет значительную роль на сцене веб-разработки.
+By default, Node.js uses `CommonJS` for module organization, which allows developers to split code across multiple files and reuse it throughout an application. However, `ESM (ECMAScript Modules)` can also be used.
 
-Node.js имеет уникальное преимущество, поскольку миллионы разработчиков фронтенда, которые пишут JavaScript для браузера, теперь могут выполнять код на стороне сервера и код на стороне фронтенда без необходимости изучать совершенно другой язык.
+Node.js has a vast library ecosystem and a large community. It's open-source, cross-platform, and since its introduction in 2009, it has gained massive popularity and now plays a major role in modern web development.
 
-## Скорость работы
+One unique advantage of Node.js is that millions of frontend developers who write JavaScript for browsers can now also use the same language for backend development—without needing to learn a completely different language.
 
-Одной из основных привлекательных особенностей Node.js является скорость. JavaScript-код, выполняемый в среде Node.js, может быть в два раза быстрее, чем код, написанный на компилируемых языках, вроде C или Java, и на порядки быстрее интерпретируемых языков наподобие Python или Ruby. Причиной подобного является неблокирующая архитектура платформы, а конкретные результаты зависят от используемых тестов производительности, но, в целом, Node.js — это очень быстрая платформа.
+# Performance
 
-## Node.js REPL
+One of Node.js’s most attractive features is its speed. JavaScript code executed in Node.js can run up to twice as fast as code written in compiled languages like C or Java, and many times faster than interpreted languages like Python or Ruby.
 
-*__REPL__* расшифровывается как `Read-Evaluate-Print-Loop` и представляет собой интерактивную оболочку, которая позволяет пользователям вводить команды JavaScript, которые затем сразу исполняются и выводят результат. Это мощный инструмент для быстрого тестирования кода, экспериментов и отладки
+This is largely due to Node’s non-blocking architecture. The actual performance results depend on the benchmark used, but overall, Node.js is considered a very fast platform.
 
-1. Запуск REPL
+# Node.js REPL
 
-Вы можете запустить `REPL` в Node.js, просто выполнив команду node в терминале без указания файла скрипта. После этого вы увидите приглашение `REPL` (>) и можете начинать вводить JavaScript код, который сразу же исполняется
+*__REPL__* stands for `Read-Evaluate-Print-Loop`. It's an interactive shell that allows users to enter JavaScript commands, execute them immediately, and view the results.
+
+This makes REPL a powerful tool for quickly testing code, experimenting, and debugging.
+
+# 1. Starting REPL
+
+You can start the Node.js REPL by running the node command in a terminal without specifying a script file. You’ll see a REPL prompt (>) and can begin typing JavaScript code that executes immediately.
 
 ```nodejs
 > const x = 10;
 undefined
 > x * 2
 20
-
 ```
 
-Команда `node` - это команда, которая используется для запуска скриптов.
+To run a script file instead, use:
 
 ```nodejs
 node script.js
 ```
 
-REPL сохраняет историю введенных команд, что позволяет просматривать предыдущие команды и их результаты. Используйте клавиши вверх/вниз для навигации по истории.
+REPL retains a history of entered commands, which you can navigate using the up/down arrow keys.
 
-В REPL есть несколько специальных команд, все они начинаются с точки `.` . К ним относятся.
+## 2. REPL Special Commands
 
-- `.help`: показывает справку по точечным командам.
+All REPL commands start with a dot (.):
 
-- `.editor`: включает режим редактора, позволяющий легко писать многострочный код JavaScript. Как только вы окажетесь в этом режиме, введите ctrl-D, чтобы запустить написанный вами код.
+- `.help`: displays help for REPL commands.
+- `.editor`: opens the multi-line editor mode; exit with Ctrl+D to run the code.
+- `.break`: exits multi-line input mode, similar to Ctrl+C.
+- `.clear`: resets the REPL context to an empty object and clears current multi-line input.
+- `.load`: <filename&gt>: loads a JavaScript file relative to the current directory.
+- .save <filename&gt>: saves the current REPL session to a file.
+- `.exit`: exits REPL (same as pressing Ctrl+C twice).
 
-- `.break`: при вводе многострочного выражения ввод команды .break прерывает дальнейший ввод. Аналогично нажатию клавиши ctrl-C.
+## Event Loop
 
-- `.clear`: сбрасывает контекст REPL на пустой объект и очищает любое многострочное выражение, вводимое в данный момент.
+The `Event Loop` is a core mechanism that allows Node.js to efficiently manage asynchronous operations and event handling. It runs continuously in a single thread and cycles through various stages.
 
-- `.load`: загружает файл JavaScript, относительно текущего рабочего каталога.
+`Libuv`, a C library, implements this pattern and is a fundamental part of Node.js.
 
-- `.save`: сохраняет все, что вы ввели в сеансе REPL, в файл (укажите имя файла).
+Each complete pass through all stages of the event loop is called a `tick`.
 
-- `.exit`: завершает работу (то же самое, что два раза нажать ctrl-C).
-
-## Цикл событий
-
-Цикл событий — Этт механизм позволяет эффективно обрабатывать асинхронные операции и управлять событиями в приложении. Это буквально бесконечный цикл и на самом деле один поток.
-
-`Libuv` — C библиотека которая реализует этот паттерн и является частью ядра Node.js.
-
-Цикл событий имеет 6 фаз, каждое исполнение всех 6 фаз называют `tick`-ом.
+The event loop consists of 6 phases:
 
 ![Alt text](image.png)
 
-- `timers`: в этой фазе выполняются коллбэки, запланированные методами `setTimeout()` и `setInterval()`;
-
-- `pending callbacks`: выполняются почти все коллбэки, за исключением событий close, таймеров и setImmediate();
-
-- `idle, prepare`: используется только для внутренних целей;
-
-- `poll`: ответственен за получение новых событий ввода/вывода. Node.js может блокироваться на этом этапе;
-
-- `check`: коллбэки, вызванные методом setImmediate(), выполняються на этом этапе;
-
-- `close callbacks`: например, socket.on('close', ...);
+- `timers`: Executes callbacks scheduled by setTimeout() and setInterval().
+- `pending callbacks`: Executes most I/O callbacks, excluding close events, timers, and setImmediate().
+- `idle, prepare`: Used internally by Node.js.
+- `poll`: Retrieves new I/O events; Node may block here.
+- `check`: Executes callbacks scheduled by setImmediate().
+- `close callbacks`: Executes, for example, socket.on('close', ...).

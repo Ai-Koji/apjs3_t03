@@ -1,31 +1,24 @@
-# Алгоритм "минимакс"
+## Minimax Algorithm
 
-`Алгоритм минимакс (Minimax)` — это решающий алгоритм, применяемый в теории игр и искусственном интеллекте для определения оптимального хода в нулевойсходных играх с альтернативными ходами двух игроков (один из них стремится минимизировать результат, а другой максимизировать). Он используется для принятия решений в условиях неопределенности.
+The `Minimax Algorithm` is a decision-making algorithm used in game theory and artificial intelligence to determine the optimal move in zero-sum games with alternating turns between two players (one aiming to minimize the result, the other to maximize it). It is used to make decisions under uncertainty.
 
-В контексте минимакса играется сценарий взаимодействия двух оппонентов: максимизирующего игрока (Макс) и минимизирующего игрока (Мин). Алгоритм строит дерево решений, где узлы представляют состояния игры, рёбра — возможные ходы, а листья — конечные состояния игры (выигрыш, проигрыш, ничья).
+In the context of Minimax, the scenario involves two opponents: **Max** — the maximizing player, **Min** — the minimizing player.
 
-Преимущество минимакса заключается в том, что он гарантирует оптимальное решение в условиях полной информации. Однако, в реальных приложениях, где глубина дерева может быть очень большой, исчисление может стать вычислительно затратным.
+The algorithm builds a decision tree: **nodes** represent game states, **edges** represent possible moves, **leaves** represent terminal game states (win, loss, draw).
 
-## Принцип работы алгоритма
+The main advantage of Minimax is that it guarantees an optimal decision in situations with complete information. However, in real-world applications where the decision tree is deep, it can become computationally expensive.
 
-1. Рекурсивный обход деревьев
+## How the Algorithm Works
 
-- Начинается с корня дерева, который представляет текущее состояние игры.
-
-- Алгоритм рекурсивно просматривает дерево, расширяя его вглубь, пока не достигнет листьев.
-
-2. Оценка листьев
-
-- Когда достигается лист, присваивается оценка этого конечного состояния (положительная, отрицательная или ноль в зависимости от результата).
-
-3. Минимизация и максимизация
-
-- В каждом узле алгоритм минимизирует оценку для игрока Мин (пытается найти минимальное значение) и максимизирует оценку для игрока Макс (пытается найти максимальное значение).
-
-4. Передача оценок вверх
-
-- Оценки передаются вверх по дереву, позволяя каждому игроку выбирать оптимальные ходы на своем уровне.
-
-5. Принятие решения
-
-- После просмотра всего дерева алгоритм возвращает оптимальный ход в текущей ситуации.
+1. **Recursive Tree Traversal**
+    - Starts from the root node, which represents the current state of the game.
+    - The algorithm recursively explores the tree, expanding it downward until it reaches the leaf nodes.
+2. **Leaf Evaluation**
+    - Once a leaf is reached, it is assigned a score (positive, negative, or zero depending on the outcome).
+3. **Minimization and Maximization**
+    - At each node, the algorithm minimizes the score for the Min player (seeking the lowest value)
+    - or maximizes the score for the Max player (seeking the highest value).
+4. **Score Propagation Upward**
+    - These scores propagate upward through the tree, allowing each player to choose the best possible move at their level.
+5. **Decision Making**
+    - After evaluating the full tree, the algorithm returns the optimal move for the current game state.
