@@ -1,5 +1,6 @@
 # Prerequisites
 *.d
+node_modules/
  
 # Object files
 *.o
@@ -37,7 +38,6 @@
  
 # Executables
 *.exe
-*.app
 *.i*86
 *.x86_64
 *.hex
@@ -104,7 +104,6 @@
 *.mts
 *.rm
 *.rmvb
-*.ts
 *.vcd
 *.vid
 *.vob
@@ -121,7 +120,6 @@
 *.stl
  
 # Kernel Module Compile Results
-*.mod*
 *.cmd
 .tmp_versions/
 modules.order
