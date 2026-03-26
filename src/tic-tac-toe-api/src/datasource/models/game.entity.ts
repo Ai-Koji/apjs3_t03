@@ -1,5 +1,3 @@
-import {Board} from './board.entity';
-
 export class GameEntity {
   id: string; // UUID
   board: string; // JSON формат

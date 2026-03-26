@@ -81,10 +81,14 @@ export class GameService implements IGameService  {
             return false;
         return true;
     }
+    /** определяет статус игры
+     * @param game -игра
+     * @returns {number} 3 - ничья, -1 - игра продолжается, 1 - крестик победил, 2 - нолик победил
+     */
     isEnd(game: Game): number {
         let board = game.board;
 
-        let isPeace = 1;
+        let isPeace = true;
 
         for (let i = 0; i < 3; i++) {
             if (board[i][0] == board[i][1] && board[i][0] == board[i][2])
@@ -94,7 +98,7 @@ export class GameService implements IGameService  {
                 return board[0][i];           
             
             if (board.find(el => el[i] == 0))
-                isPeace = 0;
+                isPeace = false;
         }
 
         if (isPeace)
