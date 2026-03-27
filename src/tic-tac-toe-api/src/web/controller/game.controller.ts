@@ -12,14 +12,14 @@ constructor(
   ) {}
 
   @Post(':uuid')
-  public async playerMove(@Param('uuid') uuid: string | null, @Body() body: any) {
+  playerMove(@Param('uuid') uuid: string | null, @Body() body: any) {
     body.id = uuid;
 
     let gameDomain = GameWebMapper.toDomain(body);
 
     try {
       if (!this.gameService.validateBoard(gameDomain)) {
-        // TODO: 400
+        // return this.gameService
       }
 
       console.log(this.gameService.getNextMove(gameDomain))
@@ -30,8 +30,8 @@ constructor(
     }
   }
   @Get()
-  getHello(): string {
-    return 'hello world';
+  test(): string {
+    return 'test message';
   }
 }
 //POST:
