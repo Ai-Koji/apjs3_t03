@@ -1,4 +1,4 @@
-import {Board, Game} from '../model/game.model';
+import {Game} from '../model/game.model';
 
 export interface IGameService {
     /** Вычисление следующего хода методом minmax

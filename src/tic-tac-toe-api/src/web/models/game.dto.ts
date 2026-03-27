@@ -1,8 +1,5 @@
-export interface GameDTOReq {
-    board: number[][]
-}
 export interface GameDTORes {
-    id: string;
+    id: string | null;
     board: number[][];
     status: 'win' | 'lose' | 'draw' | 'continue';
 }

@@ -1,7 +1,9 @@
 import {IGameService} from './game.service.interface'
 import {Game} from '../model/game.model'
 import { IGameRepository } from '../../datasource/repository/game.repository.interface';
+import { Injectable } from '@nestjs/common';
 
+// @Injectable()
 export class GameService implements IGameService  {
     private _repository: IGameRepository;
     constructor(repository: IGameRepository) {
@@ -68,6 +70,17 @@ export class GameService implements IGameService  {
             }
             return bestScore;
         }
+    }
+    validateBoard(game: Game) {
+        let count1 = game.board.flat().filter(el => el === 1).length
+        let count2 = game.board.flat().filter(el => el === 2).length
+        if (
+            Math.abs(count1 - count2) > 1 
+            || 
+            count2 >= count1
+        )
+            return false;
+        return true;
     }
 
     validate(game: Game, move: {x: number, y: number}): boolean {

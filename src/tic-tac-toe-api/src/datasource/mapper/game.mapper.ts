@@ -1,7 +1,7 @@
 import { GameEntity } from '../models/game.entity';
 import { Game } from '../../domain/model/game.model';
 
-export class GameMapper {
+export class GameEntityMapper {
     static toDomain(entity: GameEntity): Game {
         let boardList = JSON.parse(entity.board); 
         return new Game(
