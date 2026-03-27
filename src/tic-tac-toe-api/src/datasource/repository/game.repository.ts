@@ -16,4 +16,9 @@ export class GameRepositoryImpl implements IGameRepository {
     const entity = GameStorage.getMap().get(id);
     return entity ? GameEntityMapper.toDomain(entity) : null;
   }
+
+  getAll(): any {
+    const entity = GameStorage.getMap();
+    return Array.from(entity.values());
+  }
 }

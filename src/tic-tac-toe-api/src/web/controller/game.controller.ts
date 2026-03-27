@@ -2,7 +2,7 @@
 import { GameRepositoryImpl } from 'src/datasource/repository/game.repository';
 import { GameWebMapper } from 'src/web/mapper/game.mapper';
 import { GameService } from 'src/domain/service/game.service';
-import { Controller, Post, Body, Get, Param } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, BadRequestException, NotFoundException} from '@nestjs/common';
 
 @Controller('game')
 export class GameController {
@@ -12,26 +12,42 @@ constructor(
   ) {}
 
   @Post(':uuid')
-  playerMove(@Param('uuid') uuid: string | null, @Body() body: any) {
-    body.id = uuid;
+  playerMove(@Param('uuid') uuid: string | null, @Body() body: any) {    
+    if (!body || !body.board) {
+      throw new BadRequestException('Invalid request');
+    }
+    body.id = uuid == 'null' ? null : uuid;
+
+
+    let gameOrigin = this.gameRepo.getById(uuid? uuid : "");
+    if (!gameOrigin && uuid != 'null') {
+      throw new NotFoundException(`Game with id ${uuid} not found`);
+    }
 
     let gameDomain = GameWebMapper.toDomain(body);
 
-    try {
-      if (!this.gameService.validateBoard(gameDomain)) {
-        // return this.gameService
-      }
+    if (gameOrigin) {
+      if (!this.gameService.validateNewBoard(gameOrigin, gameDomain))
+        return new BadRequestException('некорректное поле');
+    }
+    
+    if (!this.gameService.validateBoard(gameDomain)) {
+      throw new BadRequestException('Invalid board');
+    }
 
-      console.log(this.gameService.getNextMove(gameDomain))
-      this.gameRepo.save(gameDomain);
+    if (this.gameService.isEnd(gameDomain)) {
+      return GameWebMapper.toDto(gameDomain, this.gameService.isEnd(gameDomain));
     }
-    catch (error) {
-      // TODO: 500
-    }
+
+    let position = this.gameService.getNextMove(gameDomain);
+    gameDomain.board[position.x][position.y] = 2;
+    
+    this.gameRepo.save(gameDomain);
+    return GameWebMapper.toDto(gameDomain, this.gameService.isEnd(gameDomain));
   }
   @Get()
-  test(): string {
-    return 'test message';
+  list(): string {
+    return this.gameRepo.getAll();
   }
 }
 //POST:

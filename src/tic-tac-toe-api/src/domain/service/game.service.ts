@@ -83,6 +83,24 @@ export class GameService implements IGameService  {
         return true;
     }
 
+    validateNewBoard(origin: Game, newGame: Game): boolean {
+        let newOne = 0;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 3; j++) {
+                if (origin.board[i][j] !== newGame.board[i][j] && origin.board[i][j] !== 0)
+                    return false;
+                else if (origin.board[i][j] === 0 && newGame.board[i][j] === 2)
+                    return false;
+                else if (origin.board[i][j] === 0 && newGame.board[i][j] === 1)
+                    newOne++;
+            }
+        }
+
+        if (newOne > 1)
+            return false;
+        return true;
+    } 
+
     validate(game: Game, move: {x: number, y: number}): boolean {
         if (
             move.y === undefined || 
@@ -119,6 +137,6 @@ export class GameService implements IGameService  {
 
         if (board[0][0] == board[1][1] && board[0][0] == board[2][2])
             return board[0][0];
-        return -1;
+        return 0;
     }
 }
